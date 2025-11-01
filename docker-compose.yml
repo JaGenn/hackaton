@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+#  app:
+#    build:
+#      context: .
+#    container_name: app
+#    depends_on:
+#      - db
+#      - redis
+#      - minio
+#    env_file:
+#      - .env
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - app-network
+
+  db:
+    image: postgres:16
+    container_name: db
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "54321:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - app-network
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
+    command: server ~/data --console-address :9090
+    ports:
+      - '9090:9090'
+      - '9000:9000'
+    volumes:
+      - minio-data:/data
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio-data:
+
+networks:
+  app-network:
+    driver: bridge
