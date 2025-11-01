@@ -1,0 +1,88 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-pollution-point-table
+      author: JaGenn
+      changes:
+        - createTable:
+            tableName: pollution_point
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: latitude
+                  type: DOUBLE PRECISION
+                  constraints:
+                    nullable: false
+              - column:
+                  name: longitude
+                  type: DOUBLE PRECISION
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: pollution_type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: photo_url
+                  type: VARCHAR(255)
+              - column:
+                  name: author
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+
+        - createIndex:
+            tableName: pollution_point
+            columns:
+              - column:
+                  name: latitude
+            indexName: idx_pollution_point_latitude
+
+        - createIndex:
+            tableName: pollution_point
+            columns:
+              - column:
+                  name: longitude
+            indexName: idx_pollution_point_longitude
+
+        - createIndex:
+            tableName: pollution_point
+            columns:
+              - column:
+                  name: status
+            indexName: idx_pollution_point_status
+
+        - createIndex:
+            tableName: pollution_point
+            columns:
+              - column:
+                  name: pollution_type
+            indexName: idx_pollution_point_type
+
+        - createIndex:
+            tableName: pollution_point
+            columns:
+              - column:
+                  name: created_at
+            indexName: idx_pollution_point_created_at
